@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Link from "next/link";
+import ClientNav from "./components/ClientNav";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -22,12 +24,46 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-900`}
       >
-        {children}
+        <div className="flex min-h-screen">
+          {/* Sidebar (desktop) */}
+          <aside className="hidden md:flex flex-col w-64 bg-gradient-to-b from-slate-800 to-slate-900 text-white p-4">
+            <div className="mb-6">
+              <Link href="/" className="text-lg font-bold">
+                A GOLD FISH
+              </Link>
+            </div>
+
+            <ClientNav />
+
+            <div className="mt-6">
+              <Link
+                href="/new"
+                className="block w-full text-center px-3 py-2 bg-white/6 rounded-md text-sm"
+              >
+                + New chat
+              </Link>
+            </div>
+          </aside>
+
+          {/* Main area */}
+          <div className="flex-1 min-h-screen flex flex-col">
+            {/* Topbar (mobile) */}
+            <header className="md:hidden bg-gradient-to-r from-purple-600 to-pink-600 text-white p-3 flex items-center justify-between">
+              <Link href="/" className="font-bold">
+                A GOLD FISH
+              </Link>
+              <ClientNav />
+            </header>
+
+            <main className="flex-1 p-6">{children}</main>
+          </div>
+        </div>
       </body>
     </html>
   );
